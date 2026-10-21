@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Rover Trading</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23a3e635' rx='20' width='100' height='100'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='black' font-family='Arial' font-weight='bold'>R</text></svg>">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        :root{--green:#a3e635;--dark-green:#65a30d;--bg:#0a0a0a;--bg2:#111;--card:#1a1a1a;--input:#1e1e1e;--border:#2a2a2a;--text:#fff;--text2:#a0a0a0;--muted:#666;--red:#ef4444;--ok:#22c55e;--warn:#f59e0b}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;overflow-x:hidden}
+        .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(163,230,53,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(163,230,53,.03) 1px,transparent 1px);background-size:60px 60px}
+        .bg-glow{position:fixed;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(163,230,53,.08) 0%,transparent 70%);border-radius:50%;z-index:0;pointer-events:none;animation:gp 8s ease-in-out infinite}
+        .bg-glow2{position:fixed;bottom:-300px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(101,163,13,.06) 0%,transparent 70%);border-radius:50%;z-index:0;pointer-events:none;animation:gp 10s ease-in-out infinite reverse}
+        @keyframes gp{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+        .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05);transition:.3s}
+        .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+        .nav-logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#a3e635,#65a30d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#000}
+        .nav-logo-text{font-size:20px;font-weight:700;color:#fff;letter-spacing:.5px}
+        .nav-logo-text span{color:var(--green)}
+        .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+        .nav-links a{color:var(--text2);text-decoration:none;font-size:14px;font-weight:500;transition:.3s;position:relative}
+        .nav-links a:hover{color:#fff}
+        .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--green);transition:.3s}
+        .nav-links a:hover::after{width:100%}
+        .nav-right{display:flex;align-items:center;gap:12px}
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;transition:.3s;border:none;outline:none;font-family:inherit}
+        .btn-p{background:linear-gradient(135deg,#a3e635,#65a30d);color:#000;box-shadow:0 0 20px rgba(163,230,53,.3)}
+        .btn-p:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(163,230,53,.5)}
+        .btn-s{background:transparent;color:#fff;border:1px solid var(--border)}
+        .btn-s:hover{border-color:var(--green);color:var(--green)}
+        .btn-sm{padding:8px 16px;font-size:13px}
+        .btn-lg{padding:16px 32px;font-size:16px}
+        .btn-full{width:100%;justify-content:center}
+        .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px;z-index:1001}
+        .hamburger span{width:24px;height:2px;background:#fff;transition:.3s}
+        .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+        .hamburger.active span:nth-child(2){opacity:0}
+        .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+        .main{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 40px 60px}
+        .auth-wrap{display:flex;width:100%;max-width:1100px;min-height:600px;background:var(--card);border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.4);animation:fadeUp .6s ease}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .auth-left{flex:1;background:linear-gradient(135deg,#0f1a0a,#0a0a0a 50%,#0a1a0a);padding:60px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+        .auth-left::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(163,230,53,.1),transparent 70%);border-radius:50%}
+        .auth-left-content{position:relative;z-index:1}
+        .auth-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(163,230,53,.1);border:1px solid rgba(163,230,53,.2);border-radius:50px;font-size:12px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:32px}
+        .auth-badge::before{content:'';width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+        .auth-left h1{font-size:42px;font-weight:800;line-height:1.2;margin-bottom:20px;letter-spacing:-1px;color:#fff}
+        .green{color:var(--green)!important}
+        .auth-left p{font-size:16px;color:var(--text2);line-height:1.7;margin-bottom:40px;max-width:400px}
+        .auth-features{display:flex;flex-direction:column;gap:16px}
+        .auth-feat{display:flex;align-items:center;gap:12px;color:var(--text2);font-size:14px}
+        .auth-feat-icon{width:32px;height:32px;background:rgba(163,230,53,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .auth-feat-icon svg{width:16px;height:16px;stroke:var(--green)}
+        .auth-right{flex:1;padding:60px;display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+        .auth-head{margin-bottom:32px}
+        .auth-head h2{font-size:28px;font-weight:700;margin-bottom:8px}
+        .auth-head p{color:var(--text2);font-size:14px}
+        .auth-head p a{color:var(--green);text-decoration:none;font-weight:600}
+        .auth-head p a:hover{text-decoration:underline}
+        .fg{margin-bottom:18px}
+        .f-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .f-label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+        .f-wrap{position:relative}
+        .f-input{width:100%;padding:13px 16px 13px 42px;background:var(--input);border:1px solid var(--border);border-radius:10px;color:#fff;font-size:14px;font-family:inherit;transition:.3s;outline:none}
+        .f-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(163,230,53,.1)}
+        .f-input::placeholder{color:var(--muted)}
+        .f-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);transition:.3s}
+        .f-wrap:focus-within .f-icon{color:var(--green)}
+        .f-icon svg{width:16px;height:16px}
+        .pw-tog{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;transition:.3s}
+        .pw-tog:hover{color:#fff}
+        .pw-tog svg{width:16px;height:16px}
+        .f-err{font-size:12px;color:var(--red);margin-top:4px;display:none;align-items:center;gap:4px}
+        .f-err.show{display:flex}
+        .pw-str{display:flex;gap:4px;margin-top:6px}
+        .str-bar{flex:1;height:3px;background:var(--border);border-radius:2px;transition:.3s}
+        .str-bar.weak{background:var(--red)}.str-bar.med{background:var(--warn)}.str-bar.strong{background:var(--ok)}
+        .str-text{font-size:11px;margin-top:3px;color:var(--muted)}
+        .f-extras{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .cb-wrap{display:flex;align-items:center;gap:8px;cursor:pointer}
+        .cb-wrap input{display:none}
+        .cb-box{width:18px;height:18px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:.3s;flex-shrink:0}
+        .cb-wrap input:checked+.cb-box{background:var(--green);border-color:var(--green)}
+        .cb-box svg{width:12px;height:12px;stroke:#000;opacity:0;transition:.3s}
+        .cb-wrap input:checked+.cb-box svg{opacity:1}
+        .cb-label{font-size:13px;color:var(--text2)}
+        .divider{display:flex;align-items:center;gap:16px;margin:20px 0}
+        .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+        .divider span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+        .toast-c{position:fixed;top:80px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:12px}
+        .toast{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;min-width:320px;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:slideIn .4s ease;position:relative;overflow:hidden}
+        .toast::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+        .toast.success::before{background:var(--ok)}.toast.error::before{background:var(--red)}.toast.warning::before{background:var(--warn)}.toast.info::before{background:var(--green)}
+        @keyframes slideIn{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes slideOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100px)}}
+        .toast-icon{width:24px;height:24px;flex-shrink:0}
+        .toast-body{flex:1}
+        .toast-title{font-size:14px;font-weight:600;margin-bottom:2px}
+        .toast-msg{font-size:13px;color:var(--text2)}
+        .toast-x{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px}
+        .toast-x:hover{color:#fff}
+        .spinner{width:20px;height:20px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .8s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+        @media(max-width:1024px){.auth-wrap{flex-direction:column}.auth-left{padding:40px}.auth-left h1{font-size:32px}.auth-right{padding:40px}}
+        @media(max-width:768px){.navbar{padding:12px 20px}.nav-links{display:none;position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;align-items:center;gap:24px;z-index:1000}.nav-links.open{display:flex}.nav-links a{font-size:18px}.hamburger{display:flex}.main{padding:100px 16px 40px}.auth-left{padding:28px 20px}.auth-left h1{font-size:26px}.auth-features{display:none}.auth-right{padding:28px 20px}.f-row{grid-template-columns:1fr}.f-extras{flex-direction:column;gap:12px;align-items:flex-start}}
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="bg-glow2"></div>
+    <div class="toast-c" id="toastC"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <div class="nav-logo-icon">R</div>
+            <div class="nav-logo-text">ROVER <span>TRADING</span></div>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="C:\Users\loate\OneDrive\Desktop\Maison Trading Programme\web development\Rover Trading Home.html">Home</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="login.html" class="btn btn-s btn-sm">Login</a>
+            <a href="index.html" class="btn btn-p btn-sm">Get Started ↗</a>
+            <button class="hamburger" id="hamburger" onclick="this.classList.toggle('active');document.getElementById('navLinks').classList.toggle('open')">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="auth-wrap">
+            <div class="auth-left">
+                <div class="auth-left-content">
+                    <div class="auth-badge">Structured Live Trading Education</div>
+                    <h1>Start your trading journey <span class="green">today.</span></h1>
+                    <p>Join the Rover Trading community and learn to read the market, one candle at a time. Create your account to get started.</p>
+                    <div class="auth-features">
+                        <div class="auth-feat">
+                            <div class="auth-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                            <span>Live trading education sessions</span>
+                        </div>
+                        <div class="auth-feat">
+                            <div class="auth-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                            <span>Price action & technical analysis</span>
+                        </div>
+                        <div class="auth-feat">
+                            <div class="auth-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                            <span>Build your own trading plan</span>
+                        </div>
+                        <div class="auth-feat">
+                            <div class="auth-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                            <span>Community support & mentorship</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-right">
+                <div class="auth-head">
+                    <h2>Create Account</h2>
+                    <p>Already have an account? <a href="login.html">Sign in</a></p>
+                </div>
+                <form id="signupForm" novalidate>
+                    <div class="f-row">
+                        <div class="fg">
+                            <label class="f-label" for="firstName">First Name</label>
+                            <div class="f-wrap">
+                                <input type="text" class="f-input" id="firstName" placeholder="John" required>
+                                <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                            </div>
+                            <div class="f-err" id="e-fn">Please enter your first name</div>
+                        </div>
+                        <div class="fg">
+                            <label class="f-label" for="lastName">Surname</label>
+                            <div class="f-wrap">
+                                <input type="text" class="f-input" id="lastName" placeholder="Doe" required>
+                                <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                            </div>
+                            <div class="f-err" id="e-ln">Please enter your surname</div>
+                        </div>
+                    </div>
+                    <div class="fg">
+                        <label class="f-label" for="email">Email Address</label>
+                        <div class="f-wrap">
+                            <input type="email" class="f-input" id="email" placeholder="john@example.com" required>
+                            <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        </div>
+                        <div class="f-err" id="e-em">Please enter a valid email address</div>
+                    </div>
+                    <div class="fg">
+                        <label class="f-label" for="cell">Cell Number</label>
+                        <div class="f-wrap">
+                            <input type="tel" class="f-input" id="cell" placeholder="+27 81 234 5678" required>
+                            <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                        </div>
+                        <div class="f-err" id="e-cell">Please enter a valid cell number</div>
+                    </div>
+                    <div class="fg">
+                        <label class="f-label" for="password">Password</label>
+                        <div class="f-wrap">
+                            <input type="password" class="f-input" id="password" placeholder="Create a strong password" required>
+                            <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                            <button type="button" class="pw-tog" onclick="togglePw('password',this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="eo"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ec" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            </button>
+                        </div>
+                        <div class="pw-str"><div class="str-bar" id="s1"></div><div class="str-bar" id="s2"></div><div class="str-bar" id="s3"></div><div class="str-bar" id="s4"></div></div>
+                        <div class="str-text" id="strTxt"></div>
+                        <div class="f-err" id="e-pw">Password must be at least 8 characters</div>
+                    </div>
+                    <div class="fg">
+                        <label class="f-label" for="confirmPw">Confirm Password</label>
+                        <div class="f-wrap">
+                            <input type="password" class="f-input" id="confirmPw" placeholder="Confirm your password" required>
+                            <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                        </div>
+                        <div class="f-err" id="e-cpw">Passwords do not match</div>
+                    </div>
+                    <div class="f-extras">
+                        <label class="cb-wrap">
+                            <input type="checkbox" id="agree">
+                            <div class="cb-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                            <span class="cb-label">I agree to the Terms & Conditions</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-p btn-full btn-lg" id="signBtn">
+                        <span id="signTxt">Create Account</span>
+                        <div class="spinner" id="signSpin" style="display:none"></div>
+                    </button>
+                    <div class="divider"><span>or</span></div>
+                    <a href="login.html" class="btn btn-s btn-full">Sign in to existing account →</a>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    // ===== SHARED UTILITIES =====
+    function toast(type,title,msg,dur=5000){
+        const c=document.getElementById('toastC');if(!c)return;
+        const icons={success:'#22c55e',error:'#ef4444',warning:'#f59e0b',info:'#a3e635'};
+        const ic=icons[type]||icons.info;
+        const t=document.createElement('div');t.className='toast '+type;
+        t.innerHTML=`<div class="toast-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${ic}" stroke-width="2"><circle cx="12" cy="12" r="10"/>${type==='success'?'<polyline points="16 8 10 16 7 13"/>':type==='error'?'<line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>':'<line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'}</svg></div><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div><button class="toast-x" onclick="this.parentElement.remove()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
+        c.appendChild(t);setTimeout(()=>{t.style.animation='slideOut .4s ease forwards';setTimeout(()=>t.remove(),400)},dur);
+    }
+    function togglePw(id,btn){const i=document.getElementById(id);const show=i.type==='password';i.type=show?'text':'password';btn.querySelector('.eo').style.display=show?'none':'block';btn.querySelector('.ec').style.display=show?'block':'none'}
+    function getUsers(){return JSON.parse(localStorage.getItem('roverUsers')||'[]')}
+    function saveUsers(u){localStorage.setItem('roverUsers',JSON.stringify(u))}
+    function genAccNum(){const u=getUsers();let max=10000;u.forEach(x=>{const n=parseInt(x.accountNumber.replace('RT',''));if(n>max)max=n});return 'RT'+String(max+1).padStart(5,'0')}
+
+    // ===== PASSWORD STRENGTH =====
+    document.getElementById('password').addEventListener('input',function(){
+        const pw=this.value;let s=0;
+        if(pw.length>=8)s++;if(/[a-z]/.test(pw)&&/[A-Z]/.test(pw))s++;if(/[0-9]/.test(pw))s++;if(/[^a-zA-Z0-9]/.test(pw))s++;
+        const labels=['','Weak','Fair','Good','Strong'];
+        const cls=['','weak','med','med','strong'];
+        ['s1','s2','s3','s4'].forEach((id,i)=>{const b=document.getElementById(id);b.className='str-bar';if(i<s)b.classList.add(cls[s])});
+        const st=document.getElementById('strTxt');st.textContent=pw?labels[s]:'';st.style.color=s<=1?'var(--red)':s<=2?'var(--warn)':'var(--ok)';
+    });
+
+    // ===== SIGNUP HANDLER =====
+    document.getElementById('signupForm').addEventListener('submit',async function(e){
+        e.preventDefault();
+        const fn=document.getElementById('firstName').value.trim();
+        const ln=document.getElementById('lastName').value.trim();
+        const em=document.getElementById('email').value.trim();
+        const cl=document.getElementById('cell').value.trim();
+        const pw=document.getElementById('password').value;
+        const cpw=document.getElementById('confirmPw').value;
+        const ag=document.getElementById('agree').checked;
+
+        // Reset errors
+        document.querySelectorAll('.f-err').forEach(e=>e.classList.remove('show'));
+        let err=false;
+
+        if(!fn){document.getElementById('e-fn').classList.add('show');err=true}
+        if(!ln){document.getElementById('e-ln').classList.add('show');err=true}
+        if(!em||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){document.getElementById('e-em').classList.add('show');err=true}
+        if(!cl||cl.replace(/[\s\-()]/g,'').length<10){document.getElementById('e-cell').classList.add('show');err=true}
+        if(pw.length<8){document.getElementById('e-pw').classList.add('show');err=true}
+        if(pw!==cpw){document.getElementById('e-cpw').classList.add('show');err=true}
+        if(!ag){toast('warning','Terms Required','Please agree to the Terms & Conditions.');return}
+        if(err)return;
+
+        const btn=document.getElementById('signBtn');
+        const txt=document.getElementById('signTxt');
+        const spin=document.getElementById('signSpin');
+        btn.disabled=true;txt.style.display='none';spin.style.display='block';
+
+        // Simulate delay
+        await new Promise(r=>setTimeout(r,1500));
+
+        const users=getUsers();
+        if(users.find(u=>u.email.toLowerCase()===em.toLowerCase())){
+            toast('error','Email Taken','An account with this email already exists.');
+            btn.disabled=false;txt.style.display='inline';spin.style.display='none';return;
+        }
+
+        const accNum=genAccNum();
+        const newUser={
+            id:Date.now().toString(),
+            accountNumber:accNum,
+            firstName:fn,
+            lastName:ln,
+            email:em.toLowerCase(),
+            cellNumber:cl,
+            password:btoa(pw),
+            paymentStatus:'unpaid',
+            createdAt:new Date().toISOString()
+        };
+        users.push(newUser);
+        saveUsers(users);
+
+        // Send email notification via EmailJS or server
+        sendNotificationEmail(newUser);
+
+        toast('success','Account Created!','Your account number is '+accNum+'. Redirecting to login...');
+        setTimeout(()=>window.location.href='login.html',2500);
+    });
+
+    // ===== EMAIL NOTIFICATION =====
+    async function sendNotificationEmail(user){
+        try{
+            // Using EmailJS free service - you'll need to set up an account at emailjs.com
+            // Replace these IDs with your actual EmailJS service, template, and public key
+            const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    service_id: 'service_rover',      // Replace with your EmailJS service ID
+                    template_id: 'template_newaccount', // Replace with your EmailJS template ID
+                    user_id: 'YOUR_PUBLIC_KEY',         // Replace with your EmailJS public key
+                    template_params: {
+                        to_email: 'rovertrading1@gmail.com',
+                        account_number: user.accountNumber,
+                        first_name: user.firstName,
+                        last_name: user.lastName,
+                        email: user.email,
+                        cell_number: user.cellNumber,
+                        date_created: new Date(user.createdAt).toLocaleString('en-ZA')
+                    }
+                })
+            });
+            console.log('Email notification sent');
+        } catch(e) {
+            console.log('Email service not configured - account still created successfully');
+        }
+    }
+
+    // Check if logged in
+    if(localStorage.getItem('roverSession'))window.location.href='dashboard.html';
+    </script>
+</body>
+</html>
